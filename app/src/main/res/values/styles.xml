@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TopMenuText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">12pt</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Save" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="Load" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">true</item>
+    </style>
+
 </resources>

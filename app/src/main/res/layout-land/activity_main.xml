@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -20,99 +21,108 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/levelText"
-                    android:text="@string/level"
-                    style="@style/TopMenuText"/>
-                <TextView
+                    style="@style/TopMenuText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/level" />
+
+                <TextView
                     android:id="@+id/levelNumber"
-                    android:text="@string/level_default"
+                    style="@style/TopMenuText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:maxLines="1"
-                    style="@style/TopMenuText"/>
+                    android:text="@string/level_default" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/virus_count"
                     android:id="@+id/virusText"
-                    style="@style/TopMenuText"/>
-                <TextView
+                    style="@style/TopMenuText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/virus_count_default"
+                    android:text="@string/virus_count" />
+
+                <TextView
                     android:id="@+id/virusCounter"
+                    style="@style/TopMenuText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:maxLines="1"
-                    style="@style/TopMenuText"/>
+                    android:text="@string/virus_count_default" />
             </LinearLayout>
 
         </LinearLayout>
 
         <pt.isel.poo.tile.TilePanel
+            android:id="@+id/panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:widthTiles="9"
-            app:heightTiles="9"
             app:gridLine="1"
-            android:id="@+id/panel"/>
+            app:heightTiles="9"
+            app:widthTiles="9" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                style="@style/Save"
-                android:id="@+id/saveButton"/>
+            android:layout_weight="1"
+            android:gravity="center">
 
             <Button
+                android:id="@+id/saveButton"
+                style="@style/Save"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/load"
+                android:layout_weight="1"
+                android:text="@string/save" />
+
+            <Button
+                android:id="@+id/loadButton"
                 style="@style/Load"
-                android:id="@+id/loadButton"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/load" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:weightSum="10">
+
                 <ImageButton
+                    android:id="@+id/leftArrow"
                     android:layout_width="0dp"
-                    android:layout_weight="8"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/iconleft"
+                    android:layout_weight="8"
                     android:contentDescription="@string/leftArrow"
-                    android:id="@+id/leftArrow"/>
+                    android:src="@drawable/iconleft" />
             </LinearLayout>
 
             <LinearLayout
@@ -121,15 +131,15 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:weightSum="10">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_weight="8"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/iconright"
-                    android:id="@+id/rightArrow"
-                    android:contentDescription="@string/rightArrow"/>
-            </LinearLayout>
 
+                <ImageButton
+                    android:id="@+id/rightArrow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:contentDescription="@string/rightArrow"
+                    android:src="@drawable/iconright" />
+            </LinearLayout>
 
         </LinearLayout>
 

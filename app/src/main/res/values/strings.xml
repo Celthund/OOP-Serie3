@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Covid</string>
+    <string name="level">Level:</string>
+    <string name="level_default">1</string>
+    <string name="virus_count">Virus:</string>
+    <string name="virus_count_default">0</string>
+    <string name="save">Save</string>
+    <string name="load">Load</string>
+    <string name="leftArrow">Left Arrow</string>
+    <string name="rightArrow">Right Arrow</string>
 </resources>
