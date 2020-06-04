@@ -67,7 +67,8 @@
             android:id="@+id/panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:gridLine="1"
+            android:background="@color/backgroundLevel"
+            app:gridLine="0"
             app:heightTiles="9"
             app:widthTiles="9" />
 
@@ -101,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/load" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -109,38 +111,22 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:gravity="center">
-
-            <LinearLayout
+            <ImageButton
+                android:layout_marginEnd="25dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:weightSum="10">
-
-                <ImageButton
-                    android:id="@+id/leftArrow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:contentDescription="@string/leftArrow"
-                    android:src="@drawable/iconleft" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iconleft"
+                android:contentDescription="@string/leftArrow"
+                android:id="@+id/leftArrow"/>
+            <ImageButton
+                android:layout_marginStart="25dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:weightSum="10">
-
-                <ImageButton
-                    android:id="@+id/rightArrow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:contentDescription="@string/rightArrow"
-                    android:src="@drawable/iconright" />
-            </LinearLayout>
-
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iconright"
+                android:id="@+id/rightArrow"
+                android:contentDescription="@string/rightArrow"/>
         </LinearLayout>
 
     </LinearLayout>
