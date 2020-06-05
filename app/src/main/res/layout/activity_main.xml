@@ -64,7 +64,7 @@
             android:background="@color/backgroundLevel"
             app:widthTiles="9"
             app:heightTiles="9"
-            app:gridLine="0"
+            app:gridLine="1"
             android:id="@+id/panel"/>
 
     </LinearLayout>
