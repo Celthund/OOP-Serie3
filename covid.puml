@@ -1,0 +1,95 @@
+@startuml
+
+
+
+class MainActivity extends Activity{
+    void onCreate(Bundle savedInstanceState)
+    setTimeBase()
+}
+
+package View {
+    MainActivity o-- GameView
+    GameView o-- Tile
+    interface Tile {
+        void draw(Canvas canvas, int side);
+        boolean setSelect(boolean selected);
+    }
+    abstract class FigureTile implements Tile {
+        Paint paint
+        Img FigureImg
+    }
+    class GameView implements ModelListener {
+        TilePanel tilePanel
+        HashMap<Class, Tile> modelToView
+    }
+    class NurseView extends FigureTile
+    class TrashView extends FigureTile
+    class VirusView extends FigureTile
+    class WallView extends FigureTile
+}
+
+package model {
+
+    MainActivity o-- GameModel
+    GameModel o-- Level
+    GameModel o-- ModelListener
+    Level o-- Position
+    Level *-- Element
+
+    interface ModelListener {
+        void update(int x, int y, Element e);
+    }
+
+    class Position {
+        int line
+        int column
+        int getLine()
+        int setLine(int line)
+        int getColumn()
+        int setColumn(int column)
+    }
+
+    class GameModel {
+        enum Direction = LEFT, RIGHT, DOWN, UP
+        Level currentLevel
+        GameModel()
+        void movePlayer(Direction direction)
+        boolean isLevelFinisehd()
+        void modelUpdate(int x, int y, Element element)
+    }
+
+    class Level {
+        int levelNumber
+        boolean playerAlive
+        int virusCounter
+        Position playerPosition
+        HashMap availableElements
+        Element[][] board
+        Level (int levelNumber, int width, int height)
+        int getNumber()
+        void put(int line, int column, char type)
+        void put(int line, int column, Element element)
+        void moveElement()
+        Position getPlayerPosition()
+        Element get(int line, int column)
+    }
+
+    abstract class Element {
+        -boolean gravity
+        +boolean hasGravity()
+        +boolean elementCollision(Element element)
+    }
+
+    class Player extends Element{
+    }
+
+    class Virus extends Element {
+    }
+
+    class TrashCan extends Element {
+    }
+
+    class Floor extends Element {
+    }
+}
+@enduml
