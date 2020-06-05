@@ -54,8 +54,10 @@ package model {
         Level currentLevel
         GameModel()
         void movePlayer(Direction direction)
-        boolean isLevelFinisehd()
+        void moveElement(Direction direction, Position position)
+        boolean isLevelFinished()
         void modelUpdate(int x, int y, Element element)
+        void checkGravity()
     }
 
     class Level {
@@ -63,13 +65,13 @@ package model {
         boolean playerAlive
         int virusCounter
         Position playerPosition
+        Position[] gravityElements
         HashMap availableElements
         Element[][] board
         Level (int levelNumber, int width, int height)
         int getNumber()
         void put(int line, int column, char type)
         void put(int line, int column, Element element)
-        void moveElement()
         Position getPlayerPosition()
         Element get(int line, int column)
     }
