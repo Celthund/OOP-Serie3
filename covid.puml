@@ -17,12 +17,14 @@ package View {
     abstract class FigureTile implements Tile {
         Paint paint
         Img FigureImg
+        void draw(Canvas canvas, int side);
+        boolean setSelect(boolean selected);
     }
     class GameView implements ModelListener {
         TilePanel tilePanel
         HashMap<Class, Tile> modelToView
     }
-    class NurseView extends FigureTile
+    class PlayerView extends FigureTile
     class TrashView extends FigureTile
     class VirusView extends FigureTile
     class WallView extends FigureTile
@@ -43,10 +45,6 @@ package model {
     class Position {
         int line
         int column
-        int getLine()
-        int setLine(int line)
-        int getColumn()
-        int setColumn(int column)
     }
 
     class GameModel {
@@ -77,7 +75,6 @@ package model {
     }
 
     abstract class Element {
-        -boolean gravity
         +boolean hasGravity()
         +boolean elementCollision(Element element)
     }
