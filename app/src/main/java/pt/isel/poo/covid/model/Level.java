@@ -11,6 +11,7 @@ public class Level {
     LinkedList<Element> gravityElements;
     HashMap<String, Element> avaiableElements;
     Element[][] board;
+    ModelListener modelListener;
 
     public Level(int levelNumber, int line, int column) {
         this.levelNumber = levelNumber;
@@ -23,13 +24,26 @@ public class Level {
         avaiableElements.put("F", new Floor());
     }
 
-    public int getNumber() {
-        return 0;
+    public Position getPlayerPosition(){
+        return
     }
+
+    public int getNumber() {
+        return levelNumber;
+    }
+
 
     public void reset() {
     }
 
-    public void put(int l, int c, char type) {
+    public void put(int line, int column, char type) {
+        put(line,column,avaiableElements.get(String.valueOf(type)));
     }
+    public void put(int line, int column, Element element) {
+        board[line][column]= element;
+    }
+    public void update(int line, int column, Element element){
+        modelListener.update(line,column,element);
+    }
+
 }

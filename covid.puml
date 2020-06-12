@@ -54,12 +54,12 @@ package model {
         void movePlayer(Direction direction)
         void moveElement(Direction direction, Position position)
         boolean isLevelFinished()
-        void modelUpdate(int x, int y, Element element)
         void checkGravity()
     }
 
     class Level {
         int levelNumber
+        ModelListener modelListener
         boolean playerAlive
         int virusCounter
         Position playerPosition
@@ -70,6 +70,7 @@ package model {
         int getNumber()
         void put(int line, int column, char type)
         void put(int line, int column, Element element)
+        void modelUpdate(int x, int y, Element element)
         Position getPlayerPosition()
         Element get(int line, int column)
     }
