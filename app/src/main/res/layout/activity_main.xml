@@ -62,9 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/backgroundLevel"
-            app:widthTiles="9"
-            app:heightTiles="9"
-            app:gridLine="1"
+            app:gridLine="0"
             android:id="@+id/panel"/>
 
     </LinearLayout>
@@ -80,7 +78,6 @@
             android:text="@string/save"
             style="@style/Save"
             android:id="@+id/saveButton"/>
-
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"

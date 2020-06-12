@@ -5,26 +5,40 @@ import android.content.Context;
 import java.util.HashMap;
 
 import pt.isel.poo.covid.model.Element;
+import pt.isel.poo.covid.model.Floor;
+import pt.isel.poo.covid.model.Level;
 import pt.isel.poo.covid.model.ModelListener;
+import pt.isel.poo.covid.model.Player;
+import pt.isel.poo.covid.model.Trash;
+import pt.isel.poo.covid.model.Virus;
 import pt.isel.poo.tile.Tile;
 import pt.isel.poo.tile.TilePanel;
 
 public class GameView implements ModelListener {
     TilePanel tilePanel;
-    HashMap<Class, Tile> modelToView;
+    HashMap<Class<?>, Tile> modelToView;
 
-    public GameView(Context ctx) {
-        tilePanel = new TilePanel(ctx);
+    public GameView(Context ctx, TilePanel tilePanel) {
+        this.tilePanel = tilePanel;
         modelToView = new HashMap<>();
-        modelToView.put(GameView.class, new PlayerView(ctx));
+        modelToView.put(Player.class, new PlayerView(ctx));
+        modelToView.put(Floor.class, new FloorView(ctx));
+        modelToView.put(Trash.class, new TrashView(ctx));
+        modelToView.put(Virus.class, new VirusView(ctx));
     }
 
     @Override
-    public void update(int x, int y, Element e) {
-        if (e == null) {
-            tilePanel.setTile(x, y, null);
-        } else {
-            tilePanel.setTile(x, y, modelToView.get(e.getClass()));
+    public void update(Level level) {
+        tilePanel.setSize(level.getColumn(), level.getLine());
+        for (int i = 0; i < level.getLine(); i++) {
+            for (int j = 0; j < level.getColumn(); j++) {
+                if (level.get(i, j) == null) {
+                    tilePanel.setTile(j, i, modelToView.get(null));
+                } else {
+                    tilePanel.setTile(j, i, modelToView.get(level.get(i, j).getClass()));
+                }
+
+            }
         }
     }
 
