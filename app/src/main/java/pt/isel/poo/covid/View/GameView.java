@@ -27,6 +27,12 @@ public class GameView implements ModelListener {
         modelToView.put(Virus.class, new VirusView(ctx));
     }
 
+    public void setPlayerDead(boolean playerDead){
+        PlayerView playerView = (PlayerView) modelToView.get(Player.class);
+        if (playerView != null)
+            playerView.playerAlive = playerDead;
+    }
+
     @Override
     public void update(Level level) {
         tilePanel.setSize(level.getColumn(), level.getLine());

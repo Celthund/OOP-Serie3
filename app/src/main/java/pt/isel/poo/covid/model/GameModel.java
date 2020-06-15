@@ -1,5 +1,8 @@
 package pt.isel.poo.covid.model;
-
+import android.content.res.AssetManager;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -9,16 +12,50 @@ public class GameModel {
     public enum Direction {LEFT, RIGHT}
     private final int TOTAL_LEVELS = 2;
     private Level level;
-    private Loader loader;
+    private AssetManager assets;
 
-    public GameModel(ModelListener modelListener, Scanner in){
+    public GameModel(ModelListener modelListener, AssetManager assets){
         this.modelListener = modelListener;
-        loader = new Loader(in);
-        level = loadLevel(1);
-
+        this.assets = assets;
+        loadFromAssets(1);
     }
 
-    private Level loadLevel(int number){
+    public void loadFromAssets(int levelNumber){
+        try {
+            InputStream inFile = assets.open("levels.txt");
+            Scanner in = new Scanner(inFile);
+            level = loadLevel(in,levelNumber);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save(PrintWriter to){
+        to.print(level.levelNumber + "\n\n");
+        to.printf("#%s %s x %s\n", level.levelNumber, level.getLine(), level.getColumn());
+        for(int i = 0; i < level.getColumn(); i++){
+            for(int j = 0; j < level.getLine(); j++){
+                Element element = level.get(i,j);
+                if (element == null)
+                    to.print(".");
+                else
+                    element.save(to);
+            }
+            to.print("\n");
+        }
+    }
+
+    public void load(Scanner from){
+        int levelNumber = from.nextInt();
+        try {
+            level = new Loader(from).load(levelNumber);
+        } catch (Loader.LevelFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Level loadLevel(Scanner in, int number){
+        Loader loader = new Loader(in);
         Level level = null;
         try {
             level = loader.load(number);
@@ -74,6 +111,10 @@ public class GameModel {
         return level.virusCounter;
     }
 
+    public boolean isPlayerAlive(){
+        return level.playerAlive;
+    }
+
     private void checkForTrash(Position position){
         Position down = new Position(position.line + 1, position.column);
         if (level.isPositionInbounds(down) && level.get(down) != null){
@@ -90,19 +131,15 @@ public class GameModel {
         }
     }
 
-    public boolean isLevelFinished(){
-        return level.virusCounter == 0;
-    }
-
     public void onBeat(){
         if (!level.playerAlive){
             isGameOver = true;
         }
         if (level.virusCounter == 0){
-            if (level.getNumber() >= TOTAL_LEVELS)
+            if (level.levelNumber >= TOTAL_LEVELS)
                 isGameOver = true;
             else {
-                level = loadLevel(level.levelNumber + 1);
+                loadFromAssets(level.levelNumber + 1);
             }
         }
         checkGravity();

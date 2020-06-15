@@ -17,10 +17,10 @@ public class Level {
         board = new Element[line][column];
         gravityElements = new ArrayList<>();
         availableElements = new HashMap<>();
-        availableElements.put("@", new Player());
-        availableElements.put("V", new Trash());
-        availableElements.put("*", new Virus());
-        availableElements.put("X", new Floor());
+        availableElements.put(Player.character, new Player());
+        availableElements.put(Trash.character, new Trash());
+        availableElements.put(Virus.character, new Virus());
+        availableElements.put(Floor.character, new Floor());
     }
 
     public int getColumn(){
@@ -34,7 +34,6 @@ public class Level {
     public int getNumber() {
         return levelNumber;
     }
-
 
     public void reset() {
         for (int i = 0; i < getLine(); i++){
@@ -112,7 +111,4 @@ public class Level {
             }
         }
     }
-
-
-
 }
