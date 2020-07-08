@@ -3,8 +3,10 @@
 
 
 class MainActivity extends Activity{
-    void onCreate(Bundle savedInstanceState)
-    setTimeBase()
+    int MOVE_PERIOD «final»;
+    GameModel gameModel;
+    GameView gameView;
+    #onCreate(Bundle savedInstanceState)
 }
 
 package View {
@@ -17,8 +19,8 @@ package View {
     abstract class FigureTile implements Tile {
         Paint paint
         Img FigureImg
-        void draw(Canvas canvas, int side);
-        boolean setSelect(boolean selected);
+        +draw(Canvas canvas, int side);
+        +setSelect(boolean selected): boolean;
     }
     class GameView implements ModelListener {
         TilePanel tilePanel
@@ -50,7 +52,7 @@ package model {
     Level *-- Element
 
     interface ModelListener {
-        void update(Level level);
+        update(Level level);
     }
 
     class Position {
@@ -60,20 +62,23 @@ package model {
     }
 
     class GameModel {
-        -ModelListener modelListener
-        +boolean isGameOver
-        +enum Direction = LEFT, RIGHT
-        -int TOTAL_LEVELS «final»
-        -Level levelNumber
-        -Loader loader
-        +GameModel(ModelListener modelListener, Scanner in)
-        -loadLevel(int number): Level
+       -ModelListener modelListener
+       +boolean isGameOver
+       +enum Direction {LEFT, RIGHT}
+       -int TOTAL_LEVELS «final»
+       -Level level;
+       -AssetManager assets;
+
+        +GameModel(ModelListener modelListener, AssetManager assets)
+        -loadFromAssets(int levelNumber)
+        +save(PrintWriter to)
+        -load(Scanner from)
+        -loadLevel(Scanner in, int number)
         +movePlayer(Direction direction)
         +getNumberLevel(): int
         +getVirusCounter(): int
+        +isPlayerAlive(): boolean
         -checkForTrash(Position position)
-        -checkForTrash(Position position)
-        +isLevelFinished():boolean
         +onBeat()
         +checkGravity()
         +update()
@@ -85,7 +90,7 @@ package model {
         int virusCounter
         Position playerPosition
         HashMap<String, Element> availableElements;
-        HashMap availableElements
+        ArrayList<Position> gravityElements
         Element[][] board
         +Level (int levelNumber, int line, int column)
         +getColumn(): int
