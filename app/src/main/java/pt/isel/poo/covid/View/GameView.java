@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.util.HashMap;
 
-import pt.isel.poo.covid.model.Element;
 import pt.isel.poo.covid.model.Floor;
 import pt.isel.poo.covid.model.Level;
 import pt.isel.poo.covid.model.ModelListener;
@@ -33,6 +32,11 @@ public class GameView implements ModelListener {
             playerView.playerAlive = playerDead;
     }
 
+
+    /**
+     * Updates the current view with level received.
+     * @param level Level to be used as updated.
+     */
     @Override
     public void update(Level level) {
         tilePanel.setSize(level.getColumn(), level.getLine());

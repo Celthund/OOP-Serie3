@@ -6,6 +6,9 @@ import java.io.PrintWriter;
 import java.util.ListIterator;
 import java.util.Scanner;
 
+/**
+ * Class that handles the game logic.
+ */
 public class GameModel {
     private ModelListener modelListener;
     public boolean isGameOver = false;
@@ -17,19 +20,26 @@ public class GameModel {
     public GameModel(ModelListener modelListener, AssetManager assets){
         this.modelListener = modelListener;
         this.assets = assets;
-        loadFromAssets(1);
     }
 
-    public void loadFromAssets(int levelNumber){
+    /**
+     * Load a level from asset levels.txt
+     * @param levelNumber level number to be loaded.
+     */
+    public void loadLevelFromAssets(int levelNumber){
         try {
             InputStream inFile = assets.open("levels.txt");
             Scanner in = new Scanner(inFile);
-            level = loadLevel(in,levelNumber);
+            loadLevel(in, levelNumber);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Save to a file the current game state.
+     * @param to file to be written to.
+     */
     public void save(PrintWriter to){
         to.print(level.levelNumber + "\n\n");
         to.printf("#%s %s x %s\n", level.levelNumber, level.getLine(), level.getColumn());
@@ -45,7 +55,11 @@ public class GameModel {
         }
     }
 
-    public void load(Scanner from){
+    /**
+     * Load a level from a file the first position must be the level number.
+     * @param from file to be read from.
+     */
+    public void loadLevel(Scanner from){
         int levelNumber = from.nextInt();
         try {
             level = new Loader(from).load(levelNumber);
@@ -54,17 +68,25 @@ public class GameModel {
         }
     }
 
-    private Level loadLevel(Scanner in, int number){
-        Loader loader = new Loader(in);
-        Level level = null;
+    /**
+     * Load a specific level number from a file.
+     * @param from file to be read from.
+     * @param number level number to be read.
+     */
+    private void loadLevel(Scanner from, int number){
+        Loader loader = new Loader(from);
         try {
             level = loader.load(number);
         } catch (Loader.LevelFormatException e) {
             e.printStackTrace();
         }
-        return level;
     }
 
+
+    /**
+     * Move the player by one to a given direction.
+     * @param direction direction to move the player.
+     */
     public void movePlayer(Direction direction){
         Position playerPosition = level.playerPosition;
         Element element;
@@ -77,7 +99,7 @@ public class GameModel {
                     if (element == null){
                         level.moveElement(playerPosition, left1);
                     }
-                    else if (!element.elementColision(level.get(playerPosition))
+                    else if (!element.elementColision()
                             && level.isPositionInbounds(left2) && level.get(left2) == null){
                         level.moveElement(left1, left2);
                         level.moveElement(playerPosition, left1);
@@ -92,7 +114,7 @@ public class GameModel {
                     if (element == null){
                         level.moveElement(playerPosition, right1);
                     }
-                    else if (!element.elementColision(level.get(playerPosition))
+                    else if (!element.elementColision()
                             && level.isPositionInbounds(right2) && level.get(right2) == null){
                         level.moveElement(right1, right2);
                         level.moveElement(playerPosition, right1);
@@ -103,18 +125,35 @@ public class GameModel {
         update();
     }
 
+    /**
+     * Return the current level number.
+     * @return int current level number.
+     */
     public int getNumberLevel(){
         return level.levelNumber;
     }
 
+    /**
+     * Return the current level virus counter.
+     * @return int current level virus counter.
+     */
     public int getVirusCounter(){
         return level.virusCounter;
     }
 
+    /**
+     * Return whether the current level player is alive.
+     * @return boolean true if player is alive false otherwise.
+     */
     public boolean isPlayerAlive(){
         return level.playerAlive;
     }
 
+    /**
+     * Removes the element in the current position if below it is a trash can.
+     * In case the element is of the type player sets the player alive status to false.
+     * @param position position to be checked.
+     */
     private void checkForTrash(Position position){
         Position down = new Position(position.line + 1, position.column);
         if (level.isPositionInbounds(down) && level.get(down) != null){
@@ -131,7 +170,11 @@ public class GameModel {
         }
     }
 
-    public void onBeat(){
+
+    /**
+     * Updates isGameOver propriety or loads a new level if the conditions are met.
+     */
+    public void updateIfLevelIsFinished(){
         if (!level.playerAlive){
             isGameOver = true;
         }
@@ -139,12 +182,15 @@ public class GameModel {
             if (level.levelNumber >= TOTAL_LEVELS)
                 isGameOver = true;
             else {
-                loadFromAssets(level.levelNumber + 1);
+                loadLevelFromAssets(level.levelNumber + 1);
             }
         }
         checkGravity();
     }
 
+    /**
+     * Moves (if possible) elements with gravity down one position.
+     */
     public void checkGravity(){
         ListIterator<Position> iterator = level.gravityElements.listIterator();
         while (iterator.hasNext()){
@@ -165,6 +211,9 @@ public class GameModel {
         update();
     }
 
+    /**
+     * Update the current model listener.
+     */
     public void update() {
         modelListener.update(level);
     }

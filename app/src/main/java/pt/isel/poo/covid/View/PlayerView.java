@@ -15,6 +15,12 @@ public class PlayerView extends FigureTile {
         deadPlayer = new Img(ctx,R.drawable.dead);
     }
 
+
+    /**
+     * Handles the draw of the player.
+     * @param canvas To draw the tile.
+     * @param side   The width of tile in pixels.
+     */
     @Override
     public void draw(Canvas canvas, int side) {
         figureImg.draw(canvas, side,side, paint);

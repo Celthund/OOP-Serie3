@@ -1,6 +1,9 @@
 package pt.isel.poo.covid.model;
 
-public class Position {
+/**
+ * Auxiliary class for model package.
+ */
+class Position {
     int line, column;
 
     public Position(int line, int column){
