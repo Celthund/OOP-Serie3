@@ -23,11 +23,22 @@ package View {
     class GameView implements ModelListener {
         TilePanel tilePanel
         HashMap<Class, Tile> modelToView
+        +GameView(Context ctx, TilePanel tilePanel)
+        +setPlayerDead(boolean playerDead)
+        +update(Level level)
     }
-    class PlayerView extends FigureTile
-    class TrashView extends FigureTile
-    class VirusView extends FigureTile
-    class WallView extends FigureTile
+    class PlayerView extends FigureTile{
+    FloorView(Context ctx)
+    }
+    class TrashView extends FigureTile{
+     FloorView(Context ctx)
+    }
+    class VirusView extends FigureTile{
+    FloorView(Context ctx)
+    }
+    class WallView extends FigureTile{
+    FloorView(Context ctx)
+    }
 }
 
 package model {
@@ -39,23 +50,33 @@ package model {
     Level *-- Element
 
     interface ModelListener {
-        void update(int x, int y, Element e);
+        void update(Level level);
     }
 
     class Position {
         int line
         int column
+        +Position(int line, int column)
     }
 
     class GameModel {
-        ModelListener modelListener
-        enum Direction = LEFT, RIGHT, DOWN, UP
-        Level currentLevel
-        GameModel()
-        void movePlayer(Direction direction)
-        void moveElement(Direction direction, Position position)
-        boolean isLevelFinished()
-        void checkGravity()
+        -ModelListener modelListener
+        +boolean isGameOver
+        +enum Direction = LEFT, RIGHT
+        -int TOTAL_LEVELS «final»
+        -Level levelNumber
+        -Loader loader
+        +GameModel(ModelListener modelListener, Scanner in)
+        -loadLevel(int number): Level
+        +movePlayer(Direction direction)
+        +getNumberLevel(): int
+        +getVirusCounter(): int
+        -checkForTrash(Position position)
+        -checkForTrash(Position position)
+        +isLevelFinished():boolean
+        +onBeat()
+        +checkGravity()
+        +update()
     }
 
     class Level {
@@ -63,33 +84,56 @@ package model {
         boolean playerAlive
         int virusCounter
         Position playerPosition
-        Position[] gravityElements
+        HashMap<String, Element> availableElements;
         HashMap availableElements
         Element[][] board
-        Level (int levelNumber, int width, int height)
-        int getNumber()
-        void put(int line, int column, char type)
-        void put(int line, int column, Element element)
-        void modelUpdate(int x, int y, Element element)
-        Position getPlayerPosition()
-        Element get(int line, int column)
+        +Level (int levelNumber, int line, int column)
+        +getColumn(): int
+        +int getLine(): int
+        +int getNumber(): int
+        +reset()
+        +get(int line, int column): Element
+        +get(Position position): Element
+        +isPositionInbounds(Position position): boolean
+        +put(int line, int column, char type)
+        +decreaseVirus()
+        +removeElement(Position position)
+        -updatePositionInGravityElements(Position oldPosition, Position newPosition)
+        +moveElement(Position oldPosition, Position newPosition)
     }
 
     abstract class Element {
-        +boolean hasGravity()
-        +boolean elementCollision(Element element)
+        +hasGravity():boolean
+        +elementCollision(Element element):boolean
+        +abstract save(PrintWriter to)
     }
 
     class Player extends Element{
+        String character = "@" «final»
+        +hasGravity():boolean
+        +save(PrintWriter to)
+        +boolean elementColision(Element e):boolean
     }
 
     class Virus extends Element {
+        String character = "*" «final»
+        +hasGravity():boolean
+        +save(PrintWriter to)
+        +boolean elementColision(Element e):boolean
     }
 
     class TrashCan extends Element {
+        String character = "V" «final»
+        +hasGravity():boolean
+        +save(PrintWriter to)
+        +boolean elementColision(Element e):boolean
     }
 
     class Floor extends Element {
+        String character = "X" «final»
+        +hasGravity():boolean
+        +save(PrintWriter to)
+        +elementColision(Element e):boolean
     }
 }
 @enduml
