@@ -3,10 +3,10 @@
 
 
 class MainActivity extends Activity{
-    int MOVE_PERIOD «final»;
-    GameModel gameModel;
-    GameView gameView;
-    #onCreate(Bundle savedInstanceState)
+    void onCreate(Bundle savedInstanceState)
+    -saveGameModel(String file)
+    -loadGameLevel(String file)
+    +onSaveInstanceState(Bundle savedInstanceState)
 }
 
 package View {
@@ -19,8 +19,8 @@ package View {
     abstract class FigureTile implements Tile {
         Paint paint
         Img FigureImg
-        +draw(Canvas canvas, int side);
-        +setSelect(boolean selected): boolean;
+        void draw(Canvas canvas, int side);
+        boolean setSelect(boolean selected);
     }
     class GameView implements ModelListener {
         TilePanel tilePanel
@@ -52,7 +52,7 @@ package model {
     Level *-- Element
 
     interface ModelListener {
-        update(Level level);
+        void update(Level level);
     }
 
     class Position {
@@ -62,24 +62,23 @@ package model {
     }
 
     class GameModel {
-       -ModelListener modelListener
-       +boolean isGameOver
-       +enum Direction {LEFT, RIGHT}
-       -int TOTAL_LEVELS «final»
-       -Level level;
-       -AssetManager assets;
-
+        -ModelListener modelListener
+        +boolean isGameOver
+        +enum Direction = LEFT, RIGHT
+        -int TOTAL_LEVELS «final»
+        -Level levelNumber
+        -Loader loader
         +GameModel(ModelListener modelListener, AssetManager assets)
-        -loadFromAssets(int levelNumber)
+        +loadLevelFromAssets(int levelNumber)
         +save(PrintWriter to)
-        -load(Scanner from)
-        -loadLevel(Scanner in, int number)
+        +loadLevel(Scanner from)
+        +loadLevel(Scanner from, int number)
         +movePlayer(Direction direction)
         +getNumberLevel(): int
         +getVirusCounter(): int
         +isPlayerAlive(): boolean
         -checkForTrash(Position position)
-        +onBeat()
+        +updateIfLevelIsFinished()
         +checkGravity()
         +update()
     }
@@ -89,16 +88,16 @@ package model {
         boolean playerAlive
         int virusCounter
         Position playerPosition
-        HashMap<String, Element> availableElements;
         ArrayList<Position> gravityElements
+        HashMap availableElements
         Element[][] board
-        +Level (int levelNumber, int line, int column)
         +getColumn(): int
         +int getLine(): int
         +int getNumber(): int
         +reset()
         +get(int line, int column): Element
         +get(Position position): Element
+        +isPositionInbounds(int line, int column): boolean
         +isPositionInbounds(Position position): boolean
         +put(int line, int column, char type)
         +decreaseVirus()
@@ -117,28 +116,28 @@ package model {
         String character = "@" «final»
         +hasGravity():boolean
         +save(PrintWriter to)
-        +boolean elementColision(Element e):boolean
+        +boolean elementColision():boolean
     }
 
     class Virus extends Element {
         String character = "*" «final»
         +hasGravity():boolean
         +save(PrintWriter to)
-        +boolean elementColision(Element e):boolean
+        +boolean elementColision():boolean
     }
 
     class TrashCan extends Element {
         String character = "V" «final»
         +hasGravity():boolean
         +save(PrintWriter to)
-        +boolean elementColision(Element e):boolean
+        +boolean elementColision():boolean
     }
 
     class Floor extends Element {
         String character = "X" «final»
         +hasGravity():boolean
         +save(PrintWriter to)
-        +elementColision(Element e):boolean
+        +elementColision():boolean
     }
 }
 @enduml
